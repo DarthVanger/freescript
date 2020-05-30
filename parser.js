@@ -13,7 +13,7 @@ function parse(textToParse) {
   console.log('Parsed expressions: ', expressions);
 
   expressions.forEach(hightlightExpressionInEditor);
-  expressions.forEach(e => e.type === 'command' && executeCommand(e));
+  expressions.forEach(e => e.type === 'command' && compileCommand(e));
 };
 
 function hightlightExpressionInEditor(e) {
@@ -42,7 +42,7 @@ function hightlightExpressionInEditor(e) {
 }
     
 
-function executeCommand (expression) {
+function compileCommand(expression) {
   const commandName = expression.text;
   console.log('Command to execute: ', commandName);
 
@@ -50,13 +50,19 @@ function executeCommand (expression) {
   const commandJsFunctionText = commands[commandName].toString();
   console.log('commandJsFunction: ', commandJsFunctionText);
 
-  const commandArgument = findCommandArgument({ expression });
-  console.log('commandArgument: ', commandArgument);
-
-  const code = `const ${commandName.replace(' ', '')} = ${commandJsFunctionText}`;
+  const functionName = commandName.replace(' ', '');
+  const code = `const ${functionName} = ${commandJsFunctionText}\n\n`;
   console.log('code: ', code);
 
   jsOutput.innerText = jsOutput.innerText + code;
+
+  const commandArgument = findCommandArgument({ expression });
+  console.log('commandArgument: ', commandArgument);
+
+  const callCode = `${functionName}('${commandArgument}');`;
+
+  jsOutput.innerText = jsOutput.innerText + callCode;
+
   //const executeCurrentCommand = () => commandJsFunction(commandArgument);
 
   //console.log('executeCurrentCommand: ', executeCurrentCommand.toString());
