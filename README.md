@@ -5,17 +5,17 @@ Compile free speech into JavaScript.
 
 Try it out in live editor: https://darthvanger.github.io/freescript/
 
-## What can it parse currently :)
-The MVP is very basic: there 3 types of expressions:
+## What can it parse currently :-)
+The MVP is very basic: there are 3 types of expressions:
 1. `querySelector` (e.g. 'button')
 2. `domEvent` (e.g. 'click')
 3. `command` (e.g. 'show text')
 
-Parser finds matches, highliting them.
+Parser finds matches, highlighting them in the editor.
 
-Each command has a hardcoded JS code to execute (see  [commands.js]( https://github.com/DarthVanger/freescript/blob/master/commands.js)).
+Each command has a corresponding hardcoded JS code  (see  [commands.js]( https://github.com/DarthVanger/freescript/blob/master/commands.js), currently there is only one command :)).
 
-For each comamnd parser finds a last mentioned `querySelector` and `domEvent`.
+For each comamnd parser finds a last mention of `querySelector` (e.g. 'button') and `domEvent` (e.g. 'click')  in the text.
 
 Complier simply generates JS code to execute the predefined command when `domEvent` happens for an element found by `querySelector`.
 
