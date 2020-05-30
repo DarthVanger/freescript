@@ -1,6 +1,7 @@
 const domEvents = [
   'click',
-  'mouseover'
+  'mouseover',
+  'change'
 ];
 
 export default domEvents;

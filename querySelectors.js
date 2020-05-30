@@ -1,5 +1,7 @@
 const querySelectors = [
-  'button'
+  'button',
+  'input',
+  'a'
 ];
 
 export default querySelectors; 

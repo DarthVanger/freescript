@@ -34,9 +34,9 @@ function parse(textToParse) {
 Can't understand you :( Sorrr...
 
 The code must contain:
-- querySelector (e.g. <span style="background-color: ${backgroundColors.querySelector}">'button'</span>)
-- domEvent (e.g. <span style="background-color: ${backgroundColors.domEvent}">'click'</span>)
-- command (e.g. <span style="background-color: ${backgroundColors.command}">'show text'</span>)
+- querySelector (must be one of: ${querySelectors.map(querySelector => `<span style="background-color: ${backgroundColors.querySelector}">${querySelector}</span>`).join(',')})
+- domEvent (must be one of: ${domEvents.map(domEvent => `<span style="background-color: ${backgroundColors.domEvent}">${domEvent}</span>`).join(',')})
+- command (must be one of: ${Object.keys(commands).map(command => `<span style="background-color: ${backgroundColors.command}">${command}</span>`).join(',')})
 `;
 
     return;
