@@ -1,6 +1,28 @@
-The MVP is quite basic: there are 3 types of experssions
+# FreeScript
+Compile free speech into JavaScript.
 
-#### Query selectors
+![compilation demo](freescript.png?raw=true)
+
+Try it out in live editor: https://darthvanger.github.io/freescript/
+
+## What can it parse currently :)
+The MVP is very basic: there 3 types of expressions:
+1. `querySelector` (e.g. 'button')
+2. `domEvent` (e.g. 'click')
+3. `command` (e.g. 'show text')
+
+Parser finds matches, highliting them.
+
+Each command has a hardcoded JS code to execute (see  [commands.js]( https://github.com/DarthVanger/freescript/blob/master/commands.js)).
+
+For each comamnd parser finds a last mentioned `querySelector` and `domEvent`.
+
+Complier simply generates JS code to execute the predefined command when `domEvent` happens for an element found by `querySelector`.
+
+## How it works
+For each type of "expressions" there is a hardcoded array of strings which parser would match.
+
+#### [Query selectors](https://github.com/DarthVanger/freescript/blob/master/querySelectors.js)
 ```
 const querySelectors = [
   'button',
@@ -8,7 +30,7 @@ const querySelectors = [
 ]
 ```
 
-#### Dom Events
+#### [Dom Events](https://github.com/DarthVanger/freescript/blob/master/domEvents.js)
 ```
 const domEvents = [
   'click',
@@ -16,7 +38,7 @@ const domEvents = [
 ]
 ```
 
-#### Commands
+#### [Commands](https://github.com/DarthVanger/freescript/blob/master/commands.js)
 ```
 const commands = {
   'show text': (text) => document.print(text)
@@ -24,13 +46,13 @@ const commands = {
 ```
 
 ### Text is categorized by expression type
-Free script code
+For a given FreeScript code:
 ```
 button on click
 show text <h1>Hello world :)</h1>
 ```
 
-Parsed expressions:
+Parsed expressions are:
 ```
 [
   { text: 'button', type: 'querySelectors', index: 0 },
@@ -38,69 +60,16 @@ Parsed expressions:
   { text: 'show text', type: 'commands', index: 16 }
 ]
 
-Compiler execudes commands one by one.
+### For each command a `querySelector` and a `domEvent` are attached
 
-```
-expressions.forEach(e => e.type === 'command' && executeCommand(e));
-```
+For each comamnd parser finds a last mentioned `querySelector` and `domEvent`.
 
-`executeCommand(expr)` finds the command in `command.js`
-```
-const executeCommand = (expression) => {
-  const commandName = expression.text;
+Command argument is everything after the command until the line edning. 
 
-  // finds commands['show text'] = (text) => document.print(text)
-  const command = commands[commandName];
-```
-
-Now we have a function to execute, but we also need to find arguments for that function in the text.
-
-Everything after the command, until the newline, is passed to the function as an argument.
-
-```
-  const callJSFunctionForCommand = () => command(findCommandArguments());
-  // resulting function: () => document.print('<h1>Hello world :)</h1>');
-}
-```
-
-Now we need to figure out when to call the command.
-
-We find the last mentioned dom event: a dom event with expression index less than command expression index
-
-```
-const findLastMentionedDomEvent = expressions.find(e => ( 
-  e.type === 'domEvent' &&
-  e.index < command.expression.index
-)
-```
-
-Also find the last mentioned query selector
-```
-const findLastMentionedQuerySelector = expressions.reverse().find(e => ( 
-  e.type === 'querySelector' &&
-  e.index < command.expression.index
-)
-```
-
-Finally, we can make an element matched by `querySelector` react to mentioned event by executing the mentioned command
-
+### Compilation
+Code is generated from a template like
 ```
 document
-  .querySelector(findLastMentionedQuerySelector())
-  .addEventListener(findLastMentionedDomEvent, command);
-```
-
-### Compiled code
-
-Compiled code:
-```
-document
-  .querySelector('button')
-  .addEventListener('click', () => document.print('<h1>Hello world :)</h1>');
-```
-
-FreeScript code:
-```
-button on click
-show text <h1>Hello world :)</h1>
+  .querySelector(${querySelector})
+  .addEventListener(${domEvent}, ${jsFuntionCorrespondingToTheCommand});
 ```
