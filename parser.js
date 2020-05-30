@@ -9,11 +9,9 @@ function parse(textToParse) {
   const expressions = categorizeExpressions(text);
   console.log('Parsed expressions: ', expressions);
 
-
   let highlightedEditorText = text;
   expressions.forEach(hightlightExpressionInEditor);
   function hightlightExpressionInEditor(e) {
-    //highlightedEditorText = editor.innerText;
     const expressionIndex = highlightedEditorText.indexOf(e.text);
     const expressionLength = e.text.length;
     const backgroundColors = {
@@ -22,21 +20,27 @@ function parse(textToParse) {
       command: '#ffc107',
     };
 
+    const bgColor = backgroundColors[e.type];
+
     highlightedEditorText = `
       ${highlightedEditorText.substring(0, expressionIndex)}
-      <span style="background-color: ${backgroundColors[e.type]}"/>${e.text}</span>
+      <span style="background-color: ${bgColor}" class="wrapper"/>
+        ${e.text}
+        <span class="tooltip" style="background-color: ${bgColor}; border-top-color: ${bgColor}">${e.type}</span>
+      </span>
       ${highlightedEditorText.substring(expressionIndex + expressionLength)}
     `;
+
+    highlightedEditorText = highlightedEditorText.split('\n').map(l => l.replace(/\s+[<]/g, '<')).join('');
 
     editor.innerHTML = highlightedEditorText;
   }
 
-  //expressions.forEach(e => e.type === 'command' && executeCommand(e));
+  expressions.forEach(e => e.type === 'command' && executeCommand(e));
     
 };
 
 function executeCommand (expression) {
-  console.log('hellloo');
   const commandName = expression.text;
   console.log('Command to execute: ', commandName);
 
@@ -82,9 +86,12 @@ function categorizeExpressions(text) {
 }
 
 function findCommandArgument({ expression }) {
+  console.log('expression: ', expression);
   const indexOfCommandEndingInText = expression.index + expression.text.length;
+  console.log('indexOfCommandEndingInText: ', indexOfCommandEndingInText);
   const textAfterCommand = text.substring(indexOfCommandEndingInText);
-  const firstLineEndingAfterCommandIndex = textAfterCommand.match(/\n/).index;
+  console.log('textAfterCommand: ', textAfterCommand);
+  const firstLineEndingAfterCommandIndex = textAfterCommand.match('<br>').index;
   const commandArgument = textAfterCommand.substring(0, firstLineEndingAfterCommandIndex);
   return commandArgument;
 }
