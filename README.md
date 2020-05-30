@@ -43,7 +43,7 @@ const domEvents = [
 #### [Commands](https://github.com/DarthVanger/freescript/blob/master/commands.js)
 ```
 const commands = {
-  'show text': (text) => document.print(text)
+  'show text': (text) => window.alert(text)
 };
 ```
 
@@ -63,13 +63,15 @@ Parsed expressions are:
 ]
 ```
 
-### For each command a `querySelector` and a `domEvent` are attached
+### `querySelector` and `domEvent` get linked to the command
 
 For each comamnd parser finds a last mentioned `querySelector` and `domEvent`.
 
-Command argument is everything after the command until the line edning. 
+Compiler assumes the command is to be exectured for the element matching `querySelector` when `domEvent` happens.
 
-### Compilation
+Command argument is everything after the command until the line ending. 
+
+### Compilation: code is simply generated from a template
 Code is generated from a template like
 ```
 document
