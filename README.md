@@ -20,6 +20,8 @@ For each comamnd parser finds a last mention of `querySelector` (e.g. 'button') 
 Complier simply generates JS code to execute the predefined command when `domEvent` happens for an element found by `querySelector`.
 
 ## How it works
+
+### There are hardcoded strings to match against
 For each type of "expressions" there is a hardcoded array of strings which parser would match.
 
 #### [Query selectors](https://github.com/DarthVanger/freescript/blob/master/querySelectors.js)
@@ -45,7 +47,7 @@ const commands = {
 };
 ```
 
-### Text is categorized by expression type
+### Matched expressions are categorized by type
 For a given FreeScript code:
 ```
 button on click
@@ -59,6 +61,7 @@ Parsed expressions are:
   { text: 'click', type: 'domEvents', index: 10 },
   { text: 'show text', type: 'commands', index: 16 }
 ]
+```
 
 ### For each command a `querySelector` and a `domEvent` are attached
 
