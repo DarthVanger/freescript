@@ -3,8 +3,7 @@ import { parse } from './parser.js';
 
 const freeCodeText = `
 button on click<br>
-show text <h1>Hello world :)</h1><br>
-sss
+show text Hello world :)<br>
 `;
 
 const editor = document.querySelector('#freecode-editor');

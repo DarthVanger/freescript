@@ -1,6 +1,7 @@
 import querySelectors from './querySelectors.js';
 import domEvents from './domEvents.js';
 import commands from './commands.js';
+const editor = document.querySelector('#freecode-editor');
 
 let text;
 function parse(textToParse) {
@@ -8,7 +9,30 @@ function parse(textToParse) {
   const expressions = categorizeExpressions(text);
   console.log('Parsed expressions: ', expressions);
 
-  expressions.forEach(e => e.type === 'command' && executeCommand(e));
+
+  let highlightedEditorText = text;
+  expressions.forEach(hightlightExpressionInEditor);
+  function hightlightExpressionInEditor(e) {
+    //highlightedEditorText = editor.innerText;
+    const expressionIndex = highlightedEditorText.indexOf(e.text);
+    const expressionLength = e.text.length;
+    const backgroundColors = {
+      querySelector: '#007bff',
+      domEvent: '#28a745' ,
+      command: '#ffc107',
+    };
+
+    highlightedEditorText = `
+      ${highlightedEditorText.substring(0, expressionIndex)}
+      <span style="background-color: ${backgroundColors[e.type]}"/>${e.text}</span>
+      ${highlightedEditorText.substring(expressionIndex + expressionLength)}
+    `;
+
+    editor.innerHTML = highlightedEditorText;
+  }
+
+  //expressions.forEach(e => e.type === 'command' && executeCommand(e));
+    
 };
 
 function executeCommand (expression) {
@@ -27,6 +51,7 @@ function executeCommand (expression) {
   console.log('executeCurrentCommand: ', executeCurrentCommand.toString());
 
   executeCurrentCommand();
+
 }
 
 function categorizeExpressions(text) {
@@ -58,9 +83,9 @@ function categorizeExpressions(text) {
 
 function findCommandArgument({ expression }) {
   const indexOfCommandEndingInText = expression.index + expression.text.length;
-  const textAfterCommand = text.substr(indexOfCommandEndingInText);
+  const textAfterCommand = text.substring(indexOfCommandEndingInText);
   const firstLineEndingAfterCommandIndex = textAfterCommand.match(/\n/).index;
-  const commandArgument = textAfterCommand.substr(0, firstLineEndingAfterCommandIndex);
+  const commandArgument = textAfterCommand.substring(0, firstLineEndingAfterCommandIndex);
   return commandArgument;
 }
 
