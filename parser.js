@@ -8,6 +8,12 @@ let text;
 let highlightedEditorText;
 let expressions;
 
+const backgroundColors = {
+  querySelector: '#007bff',
+  domEvent: '#28a745' ,
+  command: '#ffc107',
+};
+
 function parse(textToParse) {
   text = textToParse;
   highlightedEditorText = text.replace(/\n/g, '<br />');
@@ -16,18 +22,32 @@ function parse(textToParse) {
   expressions = categorizeExpressions(text);
   console.log('Parsed expressions: ', expressions);
 
+  let canParse = true;
+  ['querySelector', 'domEvent', 'command'].forEach(type => {
+    if (!expressions.find(e => e.type === type)) canParse = false; 
+  });
+
   expressions.forEach(hightlightExpressionInEditor);
+
+  if (!canParse) {
+    jsOutput.innerHTML = `
+Can't understand you :( Sorrr...
+
+The code must contain:
+- querySelector (e.g. <span style="background-color: ${backgroundColors.querySelector}">'button'</span>)
+- domEvent (e.g. <span style="background-color: ${backgroundColors.domEvent}">'click'</span>)
+- command (e.g. <span style="background-color: ${backgroundColors.command}">'show text'</span>)
+`;
+
+    return;
+  }
+
   expressions.forEach(e => e.type === 'command' && compileCommand(e));
 };
 
 function hightlightExpressionInEditor(e) {
   const expressionIndex = highlightedEditorText.indexOf(e.text);
   const expressionLength = e.text.length;
-  const backgroundColors = {
-    querySelector: '#007bff',
-    domEvent: '#28a745' ,
-    command: '#ffc107',
-  };
 
   const bgColor = backgroundColors[e.type];
 
@@ -121,6 +141,7 @@ function categorizeExpressions(text) {
   return expressions.sort((e1, e2) => e1.index - e2.index);
 
   function addExpressions({ match, type }) {
+    if (!match) return;
     expressions.push({
       text: match[0],
       type,
