@@ -89,7 +89,8 @@ const commands = {
    ...
     
    'my command': (text) => {
-     console.log('hello world');
+     console.log('my command is executed! Passed argument:');
+     console.log(text);
    }
 };
 ```
