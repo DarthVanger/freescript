@@ -7,9 +7,12 @@ const jsOutput = document.querySelector('#js-output');
 let text;
 let highlightedEditorText;
 let expressions;
+
 function parse(textToParse) {
   text = textToParse;
-  highlightedEditorText = text;;
+  highlightedEditorText = text;
+  jsOutput.innerHTML = '';
+  console.log('textToParse: ', textToParse);
   expressions = categorizeExpressions(text);
   console.log('Parsed expressions: ', expressions);
 
