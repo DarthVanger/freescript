@@ -173,4 +173,4 @@ const domEvents = [
   "wheel"
 ];
 
-module.exports = domEvents;
+export default domEvents;

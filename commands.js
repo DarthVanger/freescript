@@ -1,5 +1,9 @@
 const commands = {
-  'show text': (text) => document.print(text)
+  'show text': (text) => {
+    const div = document.createElement('div');
+    div.innerHTML = text;
+    document.body.appendChild(div);
+  }
 };
 
-module.exports = commands;
+export default commands;

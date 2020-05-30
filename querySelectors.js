@@ -2,4 +2,4 @@ const querySelectors = [
   'button'
 ];
 
-module.exports = querySelectors; 
+export default querySelectors; 
