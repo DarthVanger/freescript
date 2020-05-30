@@ -1,1 +1,21 @@
-<button>show some text</button>
+<h2>FreeCode editor</h2>
+
+<div id="editor">
+  <div contenteditable="true" id="freecode-editor"></div>
+  <div id="js-output"></div>
+</div>
+
+<script src="index.js" type="module"></script>
+
+<style>
+  #editor {
+    display: flex;
+  }
+
+  #js-output, #freecode-editor {
+    flex: 1  1 0px;
+    padding: 10px;
+    border: solid black 2px;
+  }
+</style>
+  

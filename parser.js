@@ -1,8 +1,6 @@
-const fs = require('fs');
-const querySelectors = require('./querySelectors');
-const domEvents = require('./domEvents');
-const commands = require('./commands');
-
+import querySelectors from './querySelectors.js';
+import domEvents from './domEvents.js';
+import commands from 'commands.js';
 
 const args = process.argv.slice(2);
 const [filename] = args;
@@ -124,4 +122,4 @@ function old() {
   });
 
     console.log('wordsCategoriesMap: ', wordsCategoriesMap);
-}
+export parser;}
