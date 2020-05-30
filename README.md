@@ -21,10 +21,10 @@ Complier simply generates JS code to execute the predefined command when `domEve
 
 ## How it works
 
-### There are hardcoded strings to match against
+#### There are hardcoded strings to match against
 For each type of "expressions" there is a hardcoded array of strings which parser would match.
 
-#### [Query selectors](https://github.com/DarthVanger/freescript/blob/master/querySelectors.js)
+##### [Query selectors](https://github.com/DarthVanger/freescript/blob/master/querySelectors.js)
 ```
 const querySelectors = [
   'button',
@@ -40,14 +40,14 @@ const domEvents = [
 ]
 ```
 
-#### [Commands](https://github.com/DarthVanger/freescript/blob/master/commands.js)
+##### [Commands](https://github.com/DarthVanger/freescript/blob/master/commands.js)
 ```
 const commands = {
   'show text': (text) => window.alert(text)
 };
 ```
 
-### Matched expressions are categorized by type
+#### Matched expressions are categorized by type
 For a given FreeScript code:
 ```
 button on click
@@ -63,7 +63,7 @@ Parsed expressions are:
 ]
 ```
 
-### `querySelector` and `domEvent` get linked to the command
+#### `querySelector` and `domEvent` get linked to the command
 
 For each comamnd parser finds a last mentioned `querySelector` and `domEvent`.
 
@@ -71,8 +71,10 @@ Compiler assumes the command is to be exectured for the element matching `queryS
 
 Command argument is everything after the command until the line ending. 
 
-### Compilation: code is simply generated from a template
-Code is generated from a template like
+#### Compilation: code is simply generated from a template
+
+Having the command's JS code, `querySelector` and `domEvent`, code is simply generated from a template like this:
+
 ```
 document
   .querySelector(${querySelector})
