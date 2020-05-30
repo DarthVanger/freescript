@@ -75,7 +75,7 @@ function compileCommand(expression) {
   const code = `
 document
   .querySelector('${querySelector}')
-  .addEventListener(${callCode});
+  .addEventListener('${domEvent}', ${callCode});
   `;
 
   jsOutput.innerText = jsOutput.innerText + code;
