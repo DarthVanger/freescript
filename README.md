@@ -32,22 +32,10 @@ show text <h1>Hello world :)</h1>
 
 Parsed expressions:
 ```
-const expressions = [
-  {
-     text: 'button',
-     type: 'querySelector'
-     index: 0,
-  },
-  {
-     text: 'click',
-     type: 'domEvent',
-     index 10,
-  }
-  {
-     text: 'show text',
-     type: 'command',
-     index: 15,
-  }
+[
+  { text: 'button', type: 'querySelectors', index: 0 },
+  { text: 'click', type: 'domEvents', index: 10 },
+  { text: 'show text', type: 'commands', index: 16 }
 ]
 
 Compiler execudes commands one by one.
@@ -65,13 +53,13 @@ const executeCommand = (expression) => {
   const command = commands[commandName];
 ```
 
-Now we have a function to execute, but we also need to parse arguments.
+Now we have a function to execute, but we also need to find arguments for that function in the text.
 
-Arguments is simply everything after the command until a line ending.
+Everything after the command, until the newline, is passed to the function as an argument.
 
 ```
-  // it will be () => document.print('<h1>Hello world :)</h1>');
-  const callCommand = () => command(findCommandArguments());
+  const callJSFunctionForCommand = () => command(findCommandArguments());
+  // resulting function: () => document.print('<h1>Hello world :)</h1>');
 }
 ```
 
