@@ -80,3 +80,18 @@ document
   .querySelector(${querySelector})
   .addEventListener(${domEvent}, ${jsFuntionCorrespondingToTheCommand});
 ```
+
+## Adding new commands
+
+Simply add a command to [commands.js](https://github.com/DarthVanger/freescript/blob/master/commands.js):
+```
+const commands = {
+   ...
+    
+   'my command': (text) => {
+     console.log('hello world');
+   }
+};
+```
+
+Parses will match the command and use the provided JS function to generate the resulting code.
