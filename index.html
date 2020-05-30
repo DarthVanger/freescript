@@ -1,8 +1,12 @@
-<h2>FreeCode editor</h2>
-
 <div id="editor">
-  <div contenteditable="true" id="freecode-editor"></div>
-  <div><pre id="js-output"></pre></div>
+  <div class="freecode-editor-column">
+    <h2 style="text-align: center">FreeScript code</h2>
+    <div contenteditable="true" id="freecode-editor"></div>
+  </div>
+  <div class="js-output-column">
+    <h2 style="text-align: center">Compiled JS code</h2>
+    <div><pre id="js-output"></pre></div>
+  </div>
 </div>
 
 <script src="index.js" type="module"></script>
@@ -14,14 +18,22 @@
     display: flex;
   }
 
-  #js-output, #freecode-editor {
+  .js-output-column, .freecode-editor-column {
     flex: 1  1 0px;
-    height: 300px;
+  }
+
+  #js-output, #freecode-editor {
     align-self: center;
+    height: 300px;
     padding: 10px;
     border: solid black 2px;
     font-size: 18px;
     line-height: 1.5;
   }
+
+  #freecode-editor {
+    font-size: 22px;
+  }
+
 </style>
   

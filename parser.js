@@ -6,10 +6,11 @@ const jsOutput = document.querySelector('#js-output');
 
 let text;
 let highlightedEditorText;
+let expressions;
 function parse(textToParse) {
   text = textToParse;
   highlightedEditorText = text;;
-  const expressions = categorizeExpressions(text);
+  expressions = categorizeExpressions(text);
   console.log('Parsed expressions: ', expressions);
 
   expressions.forEach(hightlightExpressionInEditor);
@@ -47,21 +48,33 @@ function compileCommand(expression) {
   console.log('Command to execute: ', commandName);
 
   // finds commands['show text'] = (text) => document.print(text)
-  const commandJsFunctionText = commands[commandName].toString();
+  const commandJsFunctionText = commands[commandName].toString().split('\n').map(l => l.replace('  ', '')).join('\n');
   console.log('commandJsFunction: ', commandJsFunctionText);
 
   const functionName = commandName.replace(' ', '');
-  const code = `const ${functionName} = ${commandJsFunctionText}\n\n`;
-  console.log('code: ', code);
+  const commandFunctionCode = `const ${functionName} = ${commandJsFunctionText}\n\n`;
+  console.log('commandFunctionCode: ', commandFunctionCode);
 
-  jsOutput.innerText = jsOutput.innerText + code;
+  jsOutput.innerText = jsOutput.innerText + commandFunctionCode;
 
   const commandArgument = findCommandArgument({ expression });
   console.log('commandArgument: ', commandArgument);
 
-  const callCode = `${functionName}('${commandArgument}');`;
+  const querySelector = findLastMentionedQuerySelector(expression);
+  const domEvent = findLastMentionedDomEvent(expression);
 
-  jsOutput.innerText = jsOutput.innerText + callCode;
+  console.log('querySelector: ', querySelector);
+  console.log('domEvent: ', domEvent);
+
+  const callCode = `() => ${functionName}('${commandArgument}')`;
+
+  const code = `
+document
+  .querySelector('${querySelector}')
+  .addEventListener(${callCode});
+  `;
+
+  jsOutput.innerText = jsOutput.innerText + code;
 
   //const executeCurrentCommand = () => commandJsFunction(commandArgument);
 
@@ -69,6 +82,20 @@ function compileCommand(expression) {
 
   //executeCurrentCommand();
 
+}
+
+function findLastMentionedQuerySelector(expression) {
+   return expressions.find(e => ( 
+    e.type === 'querySelector' &&
+    e.index < expression.index
+  )).text;
+}
+
+function findLastMentionedDomEvent(expression) {
+  return expressions.find(e => ( 
+    e.type === 'domEvent' &&
+    e.index < expression.index
+  )).text;
 }
 
 function categorizeExpressions(text) {
@@ -105,7 +132,7 @@ function findCommandArgument({ expression }) {
   const textAfterCommand = text.substring(indexOfCommandEndingInText);
   console.log('textAfterCommand: ', textAfterCommand);
   const firstLineEndingAfterCommandIndex = textAfterCommand.match('<br>').index;
-  const commandArgument = textAfterCommand.substring(0, firstLineEndingAfterCommandIndex);
+  const commandArgument = textAfterCommand.substring(1, firstLineEndingAfterCommandIndex);
   return commandArgument;
 }
 

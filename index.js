@@ -14,7 +14,7 @@ const text = freeCodeText.trim();
 editor.innerText = text;
 
 parse(text);
-editor.addEventListener('change', () => {
+editor.addEventListener('input', () => {
   jsOutput.innerHTML = `<pre>${parse(text)}</pre>`;
 });
 
