@@ -67,7 +67,7 @@ Parsed expressions are:
 
 For each comamnd parser finds a last mentioned `querySelector` and `domEvent`.
 
-Compiler assumes the command is to be exectured for the element matching `querySelector` when `domEvent` happens.
+Compiler assumes the command is to be executed for the element matching `querySelector` when `domEvent` happens.
 
 Command argument is everything after the command until the line ending. 
 
