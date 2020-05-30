@@ -10,7 +10,7 @@ let expressions;
 
 function parse(textToParse) {
   text = textToParse;
-  highlightedEditorText = text;
+  highlightedEditorText = text.replace(/\n/g, '<br />');
   jsOutput.innerHTML = '';
   console.log('textToParse: ', textToParse);
   expressions = categorizeExpressions(text);
@@ -42,7 +42,8 @@ function hightlightExpressionInEditor(e) {
 
   highlightedEditorText = highlightedEditorText.split('\n').map(l => l.replace(/\s+[<]/g, '<')).join('');
 
-  editor.innerHTML = highlightedEditorText;
+  const highlightEditor = document.querySelector('#freecode-editor-highlight');
+  highlightEditor.innerHTML = highlightedEditorText;
 }
     
 
@@ -134,7 +135,16 @@ function findCommandArgument({ expression }) {
   console.log('indexOfCommandEndingInText: ', indexOfCommandEndingInText);
   const textAfterCommand = text.substring(indexOfCommandEndingInText);
   console.log('textAfterCommand: ', textAfterCommand);
-  const firstLineEndingAfterCommandIndex = textAfterCommand.match('<br>').index;
+
+  const lineEndingAfterCommandMatch = textAfterCommand.match(/\n/);
+  let firstLineEndingAfterCommandIndex
+  if (!lineEndingAfterCommandMatch)  {
+    firstLineEndingAfterCommandIndex = textAfterCommand.length - 1;
+  } else {
+    firstLineEndingAfterCommandIndex = lineEndingAfterCommandMatch.index;
+  }
+
+  console.log('firstLineEndingAfterCommandIndex: ', firstLineEndingAfterCommandIndex);
   const commandArgument = textAfterCommand.substring(1, firstLineEndingAfterCommandIndex);
   return commandArgument;
 }

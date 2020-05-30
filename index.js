@@ -2,8 +2,8 @@ import { parse } from './parser.js';
 
 
 const freeCodeText = `
-button on click<br>
-show text Hello world :)<br>
+button on click
+show text Hello world :)
 `;
 
 const editor = document.querySelector('#freecode-editor');
@@ -14,10 +14,6 @@ const text = freeCodeText.trim();
 editor.innerText = text;
 
 parse(text);
-
-editor.addEventListener('focus', (e) =>{
-  editor.innerText = text;
-});
 
 editor.addEventListener('input', (e) =>{
   console.log('e: ', e);
