@@ -53,9 +53,8 @@ function hightlightExpressionInEditor(e) {
 
   highlightedEditorText = `
     ${highlightedEditorText.substring(0, expressionIndex)}
-    <span style="background-color: ${bgColor}" class="wrapper"/>
+    <span style="background-color: ${bgColor}" />
       ${e.text}
-      <span class="tooltip" style="background-color: ${bgColor}; border-top-color: ${bgColor}">${e.type}</span>
     </span>
     ${highlightedEditorText.substring(expressionIndex + expressionLength)}
   `;
