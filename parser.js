@@ -99,12 +99,6 @@ document
 
   jsOutput.innerText = jsOutput.innerText + code;
 
-  //const executeCurrentCommand = () => commandJsFunction(commandArgument);
-
-  //console.log('executeCurrentCommand: ', executeCurrentCommand.toString());
-
-  //executeCurrentCommand();
-
 }
 
 function findLastMentionedQuerySelector(expression) {
@@ -150,11 +144,8 @@ function categorizeExpressions(text) {
 }
 
 function findCommandArgument({ expression }) {
-  console.log('expression: ', expression);
   const indexOfCommandEndingInText = expression.index + expression.text.length;
-  console.log('indexOfCommandEndingInText: ', indexOfCommandEndingInText);
   const textAfterCommand = text.substring(indexOfCommandEndingInText);
-  console.log('textAfterCommand: ', textAfterCommand);
 
   const lineEndingAfterCommandMatch = textAfterCommand.match(/\n/);
   let firstLineEndingAfterCommandIndex
@@ -164,7 +155,6 @@ function findCommandArgument({ expression }) {
     firstLineEndingAfterCommandIndex = lineEndingAfterCommandMatch.index;
   }
 
-  console.log('firstLineEndingAfterCommandIndex: ', firstLineEndingAfterCommandIndex);
   const commandArgument = textAfterCommand.substring(1, firstLineEndingAfterCommandIndex);
   return commandArgument;
 }
